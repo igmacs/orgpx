@@ -99,4 +99,84 @@ entry is decided according to orgpx-default-locations-file."
    'orgpx-wpt-to-org-entry
    (orgpx-parse-gpx-file orgpx-imported-file)))
 
+
+;;;; Collecting waypoints from org files
+
+(defcustom orgpx-files '(agenda)
+  "Files in which orgpx should look for locations to export to
+  gpx or synchronize with a gpx file. It should be a value or a
+  list of values, where the accepted values are file names, the
+  symbol 'agenda (which will be expanded to the list of
+  org-agenda files) or functions that return a list of file
+  names.")
+
+(defcustom orgpx-exported-file nil
+  "Location where the exported gpx file should be saved. It can
+  be a function of arity 0 or 1, receiving in the later case the
+  buffer with the gpx content that it's going to be saved, and
+  which returns the file name where the buffer should be saved or
+  nil for not saving to a file.")
+
+
+(defun orgpx-export ()
+  "Collect all waypoint entries from relevant org files and
+export them to a gpx file"
+  (save-window-excursion
+    (switch-to-buffer (generate-new-buffer "orgpx-export"))
+    (xml-mode)
+    ;; Write gpx file header
+    (insert
+     (concat
+      ;; Just copied verbatim the header of the gpx file exported by
+      ;; OsmAnd in my phone
+      "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n"
+      "<gpx version=\"1.1\" creator=\"OsmAnd~ 4.0.9\" xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:osmand=\"https://osmand.net\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\">\n"
+      "  <metadata>\n"
+      "    <name>favourites</name>\n"
+      "  </metadata>\n"))
+    ;; Write each waypoint field
+    ;; For file in (location-files)
+    (org-map-entries
+     ;; For entry in file
+     (lambda ()
+       (let ((name (org-entry-get (point) "ITEM"))
+             (lat (org-entry-get (point) "LATITUDE"))
+             (lon (org-entry-get (point) "LONGITUDE"))
+             (type (car (reverse (org-get-tags)))) ;; TODO
+             (desc (org-entry-get (point) "TODO")))
+         (with-current-buffer "orgpx-export"
+           (insert
+            (concat
+             (format "<wpt lat=\"%s\" lon=\"%s\">\n" lat lon)
+             (format "<name>%s</name>\n" name)
+             (format "<type>%s</type>\n" type) ;; TODO: untagify
+             "</wpt>\n")))))
+     ;;
+     (concat "+" orgpx-entry-tag) (orgpx-location-files) 'archive 'comment)
+    ;; Finalize
+    (goto-char (point-max))
+    (insert "</gpx>")
+    (indent-region (point-min) (point-max))
+    ;; TODO: handle buffer for saving
+    (let ((file (cond ((stringp orgpx-exported-file) orgpx-exported-file)
+                      ((eq (cdr (func-arity orgpx-exported-file)) 0)
+                       (funcall orgpx-exported-file))
+                      (t (funcall orgpx-exported-file) (current-buffer)))))
+      (when file (write-file file)))
+    (kill-current-buffer)))
+
+(defun orgpx-location-files ()
+  "Return the list of org-files in which to look for waypoint entries"
+  (flatten-list
+   (mapcar
+    (lambda (elem)
+      (pcase elem
+        ((pred stringp) elem)
+        ('agenda (org-agenda-files))
+        (_ (funcall elem))))
+    (if (and (listp orgpx-files) (not (eq (car orgpx-files) 'lambda)))
+        orgpx-files
+      (list orgpx-files)))))
+
+
 (provide 'orgpx)

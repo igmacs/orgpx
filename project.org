@@ -1,14 +1,22 @@
 * Testing
-  - Importing
-    #+begin_src emacs-lisp
-      (load "/home/ignacio/Desktop/orgpx/orgpx.el")
+** Importing
+   #+begin_src emacs-lisp :results silent
+     (load "/home/ignacio/Desktop/orgpx/orgpx.el")
 
-      (setq orgpx-imported-file "/home/ignacio/Desktop/orgpx/example2.gpx")
-      (setq orgpx-default-locations-file "/home/ignacio/Desktop/orgpx/locations.org")
+     (setq orgpx-imported-file "/home/ignacio/Desktop/orgpx/example2.gpx")
+     (setq orgpx-default-locations-file "/home/ignacio/Desktop/orgpx/locations.org")
 
-      (orgpx-import)
-    #+end_src
+     (orgpx-import)
+   #+end_src
+** Exporting
+   #+begin_src emacs-lisp :results silent
+     (load "/home/ignacio/Desktop/orgpx/orgpx.el")
 
+     (setq orgpx-files "/home/ignacio/Desktop/orgpx/locations.org")
+     (setq orgpx-exported-file "/home/ignacio/Desktop/orgpx/tmp.gpx")
+
+     (orgpx-export)
+   #+end_src
 
 * TODOs
 ** TODO [#C] Decide definitive format for location entries
@@ -29,7 +37,6 @@
        - background
        - color
      - can gpx support (by ignoring) custom attributes that only make sense in org?
-** TODO [#D] Handle more waypoint attributes
 ** Importing
 *** TODO [#C] Truly synchronize
     - Don't add what it's already there
@@ -48,6 +55,21 @@
     - Just have a chat named my-locations and it will always be the last message
     - In the future, it could be a bot and implement extra
       functionality there
+      - Reminders to sync, among others
 *** TODO [#D] Infer refile file/path in some scenarios
     - (e.g., same category as locations that are all in the same file)
       and suggest it.
+** Exporting
+*** TODO [#E] Use org-export?
+*** TODO [#D] Function to send exported (from org) gpx file to Telegram
+    - Import (semi-)automatically gpx files from osmand
+      - That would need a cloud and an API
+      - But we can at least automatize sending the file to Telegram
+        where importing it is two clicks away and we get a Telegram
+        notification that reminds us to do so
+*** TODO
+** TODO [#D] Handle more waypoint attributes
+** TODO [#D] Other functions to operate at emacs level
+   - Closest points with X tag
+   - etc
+** TODO [#E] Consider also tracks, and no only waypoints
