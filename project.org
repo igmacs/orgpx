@@ -1,0 +1,53 @@
+* Testing
+  - Importing
+    #+begin_src emacs-lisp
+      (load "/home/ignacio/Desktop/orgpx/orgpx.el")
+
+      (setq orgpx-imported-file "/home/ignacio/Desktop/orgpx/example2.gpx")
+      (setq orgpx-default-locations-file "/home/ignacio/Desktop/orgpx/locations.org")
+
+      (orgpx-import)
+    #+end_src
+
+
+* TODOs
+** TODO [#C] Decide definitive format for location entries
+   - Entries to be considered must have
+     - ? tag to indicate they are a location
+     - latitude and longitud properties
+     - name property (otherwise the name is the heading)
+     - type(s) property (otherwise the types are the tags)
+       - and if there is more than one, locations will be duplicated in
+         the gpx file, since OsmAnd only supports one
+     - The description is the entry's content
+     - other fields property for all other fields that I don't care
+       but someone else might
+       - date
+       - address
+       - description
+       - icon
+       - background
+       - color
+     - can gpx support (by ignoring) custom attributes that only make sense in org?
+** TODO [#D] Handle more waypoint attributes
+** Importing
+*** TODO [#C] Truly synchronize
+    - Don't add what it's already there
+    - Keep track of what has been explicitely removed on the other
+      side and remove it here too
+*** TODO [#C] Refile places as they are imported from gpx file
+    - Have a function to refile entries interactively
+    - It can be invoked while importing, or later from default refile target
+*** TODO [#D] Support multiple tags/types for the same location
+    - In OsmAnd they must be necessarily duplicated
+    - In files to be imported too
+    - In org-mode they need to be merged
+    - In exported files, probably they need to be duplicated too in
+      order for it to be imported again by OsmAnd
+*** TODO [#D] Function to download gpx file from Telegram and leave it in a convenient place
+    - Just have a chat named my-locations and it will always be the last message
+    - In the future, it could be a bot and implement extra
+      functionality there
+*** TODO [#D] Infer refile file/path in some scenarios
+    - (e.g., same category as locations that are all in the same file)
+      and suggest it.
