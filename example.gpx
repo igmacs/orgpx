@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<gpx version="1.1" creator="OsmAnd~ 4.0.9" xmlns="http://www.topografix.com/GPX/1/1" xmlns:osmand="https://osmand.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>favourites</name>
+  </metadata>
+  <wpt lat="40.4517201" lon="-3.8892909">
+    <ele>740</ele>
+    <time>2022-02-05T17:19:02Z</time>
+    <name>Futbol 1</name>
+    <type>Pistas de futbol</type>
+    <extensions>
+      <osmand:address>Calle de La Flauta Mágica, Majadahonda</osmand:address>
+      <osmand:icon>special_star</osmand:icon>
+      <osmand:background>circle</osmand:background>
+      <osmand:color>#eecc22</osmand:color>
+    </extensions>
+  </wpt>
+  <wpt lat="40.4736649" lon="-3.8673216">
+    <time>2021-12-14T14:21:27Z</time>
+    <name>Namaste Nepal</name>
+    <type>Restaurants</type>
+    <extensions>
+      <osmand:address>Calle Fundadores 1, Majadahonda</osmand:address>
+      <osmand:icon>special_star</osmand:icon>
+      <osmand:background>circle</osmand:background>
+      <osmand:color>#eecc22</osmand:color>
+    </extensions>
+  </wpt>
+</gpx>

@@ -73,3 +73,5 @@
    - Closest points with X tag
    - etc
 ** TODO [#E] Consider also tracks, and no only waypoints
+** TODO [#C] Integrate with osm.el
+   https://news.ycombinator.com/item?id=30682841 - https://github.com/minad/osm
