@@ -1,0 +1,18 @@
+#+TITLE: Orgpx
+
+This is a package for organizing your favorite places as Org Mode
+entries. I think that showing your favorite places for a given
+category in a maps applications is an awesome feature, but I would
+rather organize that list of favorite places together with my other
+notes in Org Mode. This package accomplishes that.
+
+The package is a work in progress and is not really prepared to be
+shared yet, use the code at your own risk.
+
+* Installation
+
+For now, just load manually the Elisp files in this repository.
+
+* How it works
+
+* Future iterations
