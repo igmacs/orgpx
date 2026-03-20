@@ -9,10 +9,21 @@ notes in Org Mode. This package accomplishes that.
 The package is a work in progress and is not really prepared to be
 shared yet, use the code at your own risk.
 
-* Installation
+** Installation
 
 For now, just load manually the Elisp files in this repository.
 
-* How it works
+** Dependencies
 
-* Future iterations
+There are a few dependencies that you will need to have previously
+installed. When I package this code properly they will be
+automatically installed, but for now it needs to be done manually
+
+- Org Mode, of course
+
+- https://github.com/minad/osm
+
+
+** How it works
+
+** Future iterations
