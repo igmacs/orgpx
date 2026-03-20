@@ -25,5 +25,46 @@ automatically installed, but for now it needs to be done manually
 
 
 ** How it works
+*** Defining locations
+**** Location format
 
+A favorite place is just an Org Entry with LATITUDE and LONGITUDE
+properties. Other optional fields are:
+- A tag, which will be the location category (e.g., restaurant). Tags
+  can be inherited from parent entries, or define in the location
+  entry itself. Only one tag will be used when exporting to a gpx
+  file, with children tags having priority over parent tags (behavior
+  of multiple tags in a single entry undefined for now)
+- Description, which is just the body of the entry, excluding children
+
+The exported name of the favorite place will just be the heading of
+the entry.
+
+**** Locations' location
+
+Location entries should be in the files specified by the `orgpx-files`
+variable, which should be a list of files or a function which takes no
+arguments and returns a list of files.
+
+For example, I use org-roam and add the `orgpx` tag to nodes which
+contain favorite locations, and use this function:
+
+#+begin_src emacs-lisp
+(defun orgpx-org-roam-nodes-with-tags (tags)
+  "Return the list of Org Roam nodes with given tags TAGS."
+  (cl-remove-duplicates  ;; org-roam aliases make nodes appear more than once
+   (mapcar #'org-roam-node-file
+           (seq-filter
+            (lambda (node)
+              (seq-some (lambda (tag-name)
+                          (member tag-name (org-roam-node-tags node)))
+                        tags))
+            (org-roam-node-list)))))
+
+#+end_src
+
+You could also use `org-agenda-files` or a function that returns all
+the files in a your notes directory
+
+*** Operating on locations
 ** Future iterations
