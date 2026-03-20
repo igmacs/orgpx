@@ -67,4 +67,11 @@ You could also use `org-agenda-files` or a function that returns all
 the files in a your notes directory
 
 *** Operating on locations
+**** Exporting locations to gpx file
+
+To export your favorite locations to a gpx file, just run
+`(orgpx-export FILE)`. By gpx file, I mean a file that can be used to
+import your favorite locations to OsmAnd. I don't really know the gpx
+stardard, I just used the OsmAnd exports for reference.
+
 ** Future iterations
