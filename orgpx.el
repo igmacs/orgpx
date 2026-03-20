@@ -72,6 +72,23 @@ file names.")
     (write-file file)
     (kill-current-buffer)))
 
+
+(defun orgpx-open-with-osm ()
+  "Open location at point with osm."
+  (interactive)
+  (let ((lat (org-entry-get (point) "LATITUDE"))
+        (lon (org-entry-get (point) "LONGITUDE")))
+    (browse-url (format "geo:%s,%s;z=10" lat lon))))
+
+
+(defun orgpx-open-with-google ()
+  "Open location at point using Google Maps."
+  (interactive)
+  (let ((lat (org-entry-get (point) "LATITUDE"))
+        (lon (org-entry-get (point) "LONGITUDE")))
+    (browse-url (format "https://www.google.com/maps/search/?api=1&query=%s,%s" lat lon))))
+
+
 (provide 'orgpx)
 
 ;;; orgpx.el ends here

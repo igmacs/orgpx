@@ -13,6 +13,7 @@ shared yet, use the code at your own risk.
 
 For now, just load manually the Elisp files in this repository.
 
+
 ** Dependencies
 
 There are a few dependencies that you will need to have previously
@@ -42,11 +43,11 @@ the entry.
 
 **** Locations' location
 
-Location entries should be in the files specified by the `orgpx-files`
+Location entries should be in the files specified by the ~orgpx-files~
 variable, which should be a list of files or a function which takes no
 arguments and returns a list of files.
 
-For example, I use org-roam and add the `orgpx` tag to nodes which
+For example, I use org-roam and add the =orgpx= tag to nodes which
 contain favorite locations, and use this function:
 
 #+begin_src emacs-lisp
@@ -63,15 +64,46 @@ contain favorite locations, and use this function:
 
 #+end_src
 
-You could also use `org-agenda-files` or a function that returns all
+You could also use ~org-agenda-files~ or a function that returns all
 the files in a your notes directory
 
 *** Operating on locations
 **** Exporting locations to gpx file
 
 To export your favorite locations to a gpx file, just run
-`(orgpx-export FILE)`. By gpx file, I mean a file that can be used to
+~(orgpx-export FILE)~. By gpx file, I mean a file that can be used to
 import your favorite locations to OsmAnd. I don't really know the gpx
 stardard, I just used the OsmAnd exports for reference.
 
+**** Viewing locations
+
+***** With osm.el
+
+~orgpx-open-with-osm~ will open the location at point using osm.el
+
+***** With Google Maps
+
+~orgpx-open-with-google~ will open the location at point with Google
+Maps. It will only open the map at the given coordinates, but the
+place will not be selected as an actual POI.
+
 ** Future iterations
+
+*** [#C] Open multiple locations with osm
+
+You can open multiple locations given by a gpx file with osm.el, but
+it's likely to trigger rate limiting. I want to find out and document
+how to use offline maps (see (https://github.com/minad/osm/issues/27)
+for reference), and then define a functions for querying a subset of
+your favorite locations using org-ql and displaying them with osm.el
+
+*** [#E] Open location in Google Maps as POI
+
+Right now when we open a location with Google Maps we just open the
+map at the given coordinates, but if it's a named location and we want
+to select it, we need to click it manually. It seems that to actually
+open the place without an extra click you need the Google place id,
+which can be queried in their API. To use it you need to register, and
+the free tier should be enough for querying place ids on demand and
+save them as Org properties when needed. I might try some time, but it
+has very low priority.
