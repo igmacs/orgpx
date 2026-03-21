@@ -89,6 +89,45 @@ file names.")
     (browse-url (format "https://www.google.com/maps/search/?api=1&query=%s,%s" lat lon))))
 
 
+(defun orgpx--get-coordinates-from-current-kill ()
+  "Get location coordinates from current kill (usually a link)."
+  (let ((k (current-kill 0 t)))
+    (or
+
+     ;; Option 1: delegate to osm.el which already does this well
+     (condition-case _
+         (cl-letf (((symbol-function #'osm--goto)
+                    (lambda (lat long &rest _)
+                      (list (number-to-string lat) (number-to-string long)))))
+           (osm-url k))
+       ('user-error nil))
+
+
+     ;; --- Pattern 1: simple 'lat, lon' like '41.37418, 2.13877'
+     (when (string-match
+            "^\\([+-]?[0-9.]+\\)[ ,]+\\([+-]?[0-9.]+\\)$"
+            k)
+       (list (match-string 1 k) (match-string 2 k)))
+
+     ;; --- Pattern 2: Telegram shared locations: 🌐 41.378907N, 2.154296E
+     (when (string-match
+            " \\([+-]?[0-9.]+\\)N[ ,] \\([+-]?[0-9.]+\\)E"
+            k)
+       (list
+        (match-string 1 k)
+        (match-string 2 k))))))
+
+
+(defun orgpx-get-latitude-from-current-kill ()
+  "Return latitude if valid, else empty string (which will force prompting)."
+  (let ((coordinates (orgpx--get-coordinates-from-current-kill)))
+    (if coordinates (car coordinates) "")))
+
+(defun orgpx-get-longitude-from-current-kill ()
+  "Return longitude if valid, else empty string (which will force prompting)."
+  (let ((coordinates (orgpx--get-coordinates-from-current-kill))) ;; TODO: don't compute this again
+    (if coordinates (car (cdr coordinates)) "")))
+
 (provide 'orgpx)
 
 ;;; orgpx.el ends here

@@ -67,6 +67,31 @@ contain favorite locations, and use this function:
 You could also use ~org-agenda-files~ or a function that returns all
 the files in a your notes directory
 
+**** Saving places
+
+orgpx provides a few facilities to store more easily your favorite
+locations.
+
+The functions ~orgpx-get-latitude-from-current-kill~ and
+~orgpx-get-longitude-from-current-kill~ allow to define capture
+templates which get the coordinates from the current kill. Google Map
+links and a few common coordinates notations are supported. Here is
+the capture template I use as an example.
+
+#+begin_src emacs-lisp
+  (add-to-list 'org-capture-templates
+               `("x" "Location" entry
+                 (file+headline "/path/to/file.org" "Uncategorized places")
+                 ,(concat
+                   "* %^{Title}\n"
+                   ":PROPERTIES:\n"
+                   ":LATITUDE: %^{Latitude|%(orgpx-get-latitude-from-current-kill)}\n"
+                   ":LONGITUDE: %^{Longitude|%(orgpx-get-longitude-from-current-kill)}\n"
+                   ":END:\n"
+                   "%?")
+                 :kill-buffer t))
+#+end_src
+
 *** Operating on locations
 **** Exporting locations to gpx file
 
@@ -102,6 +127,7 @@ locations with OsmAns:
 ~orgpx-open-with-google~ will open the location at point with Google
 Maps. It will only open the map at the given coordinates, but the
 place will not be selected as an actual POI.
+
 
 ** Future improvements
 *** [#C] Open multiple locations with osm
