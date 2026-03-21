@@ -75,6 +75,22 @@ To export your favorite locations to a gpx file, just run
 import your favorite locations to OsmAnd. I don't really know the gpx
 stardard, I just used the OsmAnd exports for reference.
 
+There are a few limitations when using this to sync your favorite
+locations with OsmAns:
+- The saved places will just be some coordinates, not an actual
+  POI. This also happens if you export a POI and immediately re-import
+  it in OsmAnd, so there doesn't seem to be anything this package can
+  do about it, there is no extra metadata that we can save to fix
+  it. The only way to have a POI as saved place, is to save it
+  directly from inside OsmAnd.
+- If the saved place already existed in OsmAnd, it won't be updated
+  nor duplicated on import, just ignored. I'm not sure of the exact
+  rules OsmAnd follows to decide a place is the same, but if the
+  coordinates are name are the same it decides it is. If you need
+  other fields like the description to be updated, the only solution
+  for now is deleting all your favorite places and re-imorting them
+  again.
+
 **** Viewing locations
 
 ***** With osm.el
@@ -87,8 +103,7 @@ stardard, I just used the OsmAnd exports for reference.
 Maps. It will only open the map at the given coordinates, but the
 place will not be selected as an actual POI.
 
-** Future iterations
-
+** Future improvements
 *** [#C] Open multiple locations with osm
 
 You can open multiple locations given by a gpx file with osm.el, but
@@ -97,6 +112,21 @@ how to use offline maps (see (https://github.com/minad/osm/issues/27)
 for reference), and then define a functions for querying a subset of
 your favorite locations using org-ql and displaying them with osm.el
 
+*** [#C] Import favorite places from OsmAnd
+
+A proper two-way sync is complex and not planned for now, but an
+initial import from a gpx files into locations entries following the
+orgpx format should be supported
+
+*** [#D] Automate completely syncing favorite places with OsmAnd
+I think fully automating it is out of the scope of this package, but
+at least we could automate as much as possible and document the
+possible options:
+- Using OsmAnd Cloud, the only option that should be able to be
+  fully automated
+- Doint it manually
+- Using tools like Syncthing
+*** [#D] Two-way sync between orgpx and OsmAnd
 *** [#E] Open location in Google Maps as POI
 
 Right now when we open a location with Google Maps we just open the
