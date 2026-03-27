@@ -92,6 +92,10 @@ the capture template I use as an example.
                  :kill-buffer t))
 #+end_src
 
+**** Adding a tag to a location
+This package provides the function ~orgpx-add-tag~ to add a tag to a
+location providing autocompletion from all other location tags.
+
 *** Operating on locations
 **** Exporting locations to gpx file
 

@@ -128,6 +128,28 @@ file names.")
   (let ((coordinates (orgpx--get-coordinates-from-current-kill))) ;; TODO: don't compute this again
     (if coordinates (car (cdr coordinates)) "")))
 
+
+(defvar orgpx--collected-tags nil)
+
+(defun orgpx--collect-tags ()
+  "Collect all tags currently being used by locations."
+  (if orgpx--collected-tags
+      orgpx--collected-tags
+    (setq
+     orgpx--collected-tags
+     (delete-dups
+      (flatten-list
+       (org-map-entries
+        (lambda () (org-get-tags))
+        "+LATITUDE={.+}" (orgpx-location-files) 'archive 'comment))))))
+
+(defun orgpx-add-tag ()
+  "Add tag to location, offering completion from alredy used tags."
+  (interactive)
+  (let ((tag (completing-read "Add tag: " (orgpx--collect-tags) nil t)))
+    (org-back-to-heading t) ; ensure we are on a heading
+    (org-set-tags (cons tag (org-get-tags nil t)))))
+
 (provide 'orgpx)
 
 ;;; orgpx.el ends here
