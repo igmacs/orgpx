@@ -51,16 +51,16 @@ For example, I use org-roam and add the =orgpx= tag to nodes which
 contain favorite locations, and use this function:
 
 #+begin_src emacs-lisp
-(defun orgpx-org-roam-nodes-with-tags (tags)
-  "Return the list of Org Roam nodes with given tags TAGS."
-  (cl-remove-duplicates  ;; org-roam aliases make nodes appear more than once
-   (mapcar #'org-roam-node-file
-           (seq-filter
-            (lambda (node)
-              (seq-some (lambda (tag-name)
-                          (member tag-name (org-roam-node-tags node)))
-                        tags))
-            (org-roam-node-list)))))
+  (defun orgpx-org-roam-nodes-with-tags (tags)
+    "Return the list of Org Roam nodes with given tags TAGS."
+    (cl-remove-duplicates  ;; org-roam aliases make nodes appear more than once
+     (mapcar #'org-roam-node-file
+             (seq-filter
+              (lambda (node)
+                (seq-some (lambda (tag-name)
+                            (member tag-name (org-roam-node-tags node)))
+                          tags))
+              (org-roam-node-list)))))
 
 #+end_src
 
@@ -144,6 +144,23 @@ A proper two-way sync is complex and not planned for now, but an
 initial import from a gpx files into locations entries following the
 orgpx format should be supported
 
+*** [#D] Support multiple tags/categories on export
+It's trivial to have multiple tags for a location in Org, but in
+OsmAnd a favorite place can only belong to a single group or
+category. The only way to fix that is to have the locations with
+multiple tags duplicated and make each belong to a category. To
+duplicate a location we need to change some data in order for OsmAnd
+not to consider it the same, I guess changing the name or modifying by
+a few meters the coordinates should be enough.
+
+Note anyway that most features that may come from multiple tags won't
+be made possible in OsmAnd just with this, for example showing in the
+map the places for a conjunction of categories would stil not be
+possible. If we ever need them, which is unlikely, more workarounds
+would be needed, for example in the case above we could have different
+colors for each category, show both categories, and ignore places with
+just one color. But it's clear that at this point is better to stop
+fighting against OsmAnd and use something else.
 *** [#D] Automate completely syncing favorite places with OsmAnd
 I think fully automating it is out of the scope of this package, but
 at least we could automate as much as possible and document the
