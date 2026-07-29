@@ -102,6 +102,14 @@ file names.")
         (lon (org-entry-get (point) "LONGITUDE")))
     (browse-url (format "https://www.google.com/maps/search/?api=1&query=%s,%s" lat lon))))
 
+(defun orgpx-osm-open-locations-in-file ()
+  "Open with osm.el all locations in current file."
+  (interactive)
+  (let ((file (make-temp-file "orgpx-" nil ".gpx"))
+        (orgpx-files (list buffer-file-name)))
+    (orgpx-export file)
+    (osm-open file)))
+
 
 (defun orgpx--get-coordinates-from-current-kill ()
   "Get location coordinates from current kill (usually a link)."

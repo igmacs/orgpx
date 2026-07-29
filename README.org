@@ -122,16 +122,14 @@ locations with OsmAnd:
 
 **** Viewing locations
 
-***** With osm.el
+- ~orgpx-open-with-osm~ will open the location at point using osm.el
 
-~orgpx-open-with-osm~ will open the location at point using osm.el
+- ~orgpx-open-with-google~ will open the location at point with Google
+  Maps. It will only open the map at the given coordinates, but the
+  place will not be selected as an actual POI.
 
-***** With Google Maps
-
-~orgpx-open-with-google~ will open the location at point with Google
-Maps. It will only open the map at the given coordinates, but the
-place will not be selected as an actual POI.
-
+- ~orgpx-open-locations-in-file~ will open all the locations at point
+  using osm.el.
 
 ** Future improvements
 *** [#C] Open multiple locations with osm
