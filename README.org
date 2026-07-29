@@ -32,7 +32,7 @@ automatically installed, but for now it needs to be done manually
 A favorite place is just an Org Entry with LATITUDE and LONGITUDE
 properties. Other optional fields are:
 - A tag, which will be the location category (e.g., restaurant). Tags
-  can be inherited from parent entries, or define in the location
+  can be inherited from parent entries, or defined in the location
   entry itself. Only one tag will be used when exporting to a gpx
   file, with children tags having priority over parent tags (behavior
   of multiple tags in a single entry undefined for now)
@@ -102,10 +102,10 @@ location providing autocompletion from all other location tags.
 To export your favorite locations to a gpx file, just run
 ~(orgpx-export FILE)~. By gpx file, I mean a file that can be used to
 import your favorite locations to OsmAnd. I don't really know the gpx
-stardard, I just used the OsmAnd exports for reference.
+standard, I just used the OsmAnd exports for reference.
 
 There are a few limitations when using this to sync your favorite
-locations with OsmAns:
+locations with OsmAnd:
 - The saved places will just be some coordinates, not an actual
   POI. This also happens if you export a POI and immediately re-import
   it in OsmAnd, so there doesn't seem to be anything this package can
@@ -115,9 +115,9 @@ locations with OsmAns:
 - If the saved place already existed in OsmAnd, it won't be updated
   nor duplicated on import, just ignored. I'm not sure of the exact
   rules OsmAnd follows to decide a place is the same, but if the
-  coordinates are name are the same it decides it is. If you need
+  coordinates and name are the same it decides it is. If you need
   other fields like the description to be updated, the only solution
-  for now is deleting all your favorite places and re-imorting them
+  for now is deleting all your favorite places and re-importing them
   again.
 
 **** Viewing locations
@@ -159,19 +159,19 @@ a few meters the coordinates should be enough.
 
 Note anyway that most features that may come from multiple tags won't
 be made possible in OsmAnd just with this, for example showing in the
-map the places for a conjunction of categories would stil not be
+map the places for a conjunction of categories would still not be
 possible. If we ever need them, which is unlikely, more workarounds
 would be needed, for example in the case above we could have different
 colors for each category, show both categories, and ignore places with
 just one color. But it's clear that at this point is better to stop
-fighting against OsmAnd and use something else.
+fighting against OsmAnd and use something else if that's our use case.
 *** [#D] Automate completely syncing favorite places with OsmAnd
 I think fully automating it is out of the scope of this package, but
 at least we could automate as much as possible and document the
 possible options:
 - Using OsmAnd Cloud, the only option that should be able to be
   fully automated
-- Doint it manually
+- Doing it manually
 - Using tools like Syncthing
 *** [#D] Two-way sync between orgpx and OsmAnd
 *** [#E] Open location in Google Maps as POI
