@@ -34,6 +34,35 @@ file names.")
       (string-trim-right (buffer-substring-no-properties (+ (point) 1) end)))))
 
 
+(defun orgpx-get-places ()
+  "Collect orgpx places for exporting."
+  (let (markers)
+    (org-map-entries
+     (lambda () (push (point-marker) markers))
+     "+LATITUDE={.+}" (orgpx-location-files) 'archive 'comment)
+    (nreverse markers)))
+
+(defun orgpx-export-place (marker)
+  "Return as a string the gpx entry corresponding to the place at MARKER."
+  (with-current-buffer (marker-buffer marker)
+    (save-excursion
+      (goto-char marker)
+      (let ((name (org-entry-get (point) "ITEM"))
+            (lat (org-entry-get (point) "LATITUDE"))
+            (lon (org-entry-get (point) "LONGITUDE"))
+            (type (car (reverse
+                        (delete "ATTACH" (org-get-tags)))))
+            (desc (orgpx--get-entry-description)))
+         (with-temp-buffer
+           (insert
+            (concat
+             (format "<wpt lat=\"%s\" lon=\"%s\">\n" lat lon)
+             (format "<name>%s</name>\n" name)
+             (format "<type>%s</type>\n" type)
+             (format "<desc><![CDATA[\n%s\n]]></desc>\n" desc)
+             "</wpt>\n"))
+           (buffer-string))))))
+
 (defun orgpx-export (file)
   "Collect favorite locations and export them to gpx file FILE."
   (interactive)
@@ -49,23 +78,8 @@ file names.")
       "  <metadata>\n"
       "    <name>favourites</name>\n"
       "  </metadata>\n"))
-    (org-map-entries
-     (lambda ()
-       (let ((name (org-entry-get (point) "ITEM"))
-             (lat (org-entry-get (point) "LATITUDE"))
-             (lon (org-entry-get (point) "LONGITUDE"))
-             (type (car (reverse
-                         (delete "ATTACH" (org-get-tags)))))
-             (desc (orgpx--get-entry-description)))
-         (with-current-buffer "orgpx-export"
-           (insert
-            (concat
-             (format "<wpt lat=\"%s\" lon=\"%s\">\n" lat lon)
-             (format "<name>%s</name>\n" name)
-             (format "<type>%s</type>\n" type)
-             (format "<desc><![CDATA[\n%s\n]]></desc>\n" desc)
-             "</wpt>\n")))))
-     "+LATITUDE={.+}" (orgpx-location-files) 'archive 'comment)
+    (dolist (marker (orgpx-get-places))
+      (insert (orgpx-export-place marker)))
     (goto-char (point-max))
     (insert "</gpx>")
     (indent-region (point-min) (point-max))
