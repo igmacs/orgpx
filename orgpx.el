@@ -1,5 +1,9 @@
 ;;; orgpx.el --- Organize your favorite places in Org Mode -*- lexical-binding: t; -*-
 
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "30.2") (org "9.8") (osm "2.4"))
+;; URL: https://github.com/igmacs/orgpx
+
 ;;; Commentary:
 
 ;; More information is available in the README.org file.
@@ -7,6 +11,7 @@
 ;;; Code:
 
 (require 'org)
+(require 'osm)
 
 (defcustom orgpx-files nil
   "Files in which orgpx should look for favorite locations.
@@ -22,7 +27,6 @@ file names.")
 
 (defun orgpx--get-entry-description ()
   "Get the description of a favorite location entry (i.e., its body)."
-  (interactive)
   (let* ((element (org-element-at-point))
          (begin (org-element-property :contents-begin element))
          (end   (org-element-property :contents-end element)))
@@ -63,6 +67,7 @@ file names.")
              "</wpt>\n"))
            (buffer-string))))))
 
+;;;###autoload
 (defun orgpx-export (file)
   "Collect favorite locations and export them to gpx file FILE."
   (interactive)
@@ -85,30 +90,6 @@ file names.")
     (indent-region (point-min) (point-max))
     (write-file file)
     (kill-current-buffer)))
-
-
-(defun orgpx-open-with-osm ()
-  "Open location at point with osm."
-  (interactive)
-  (let ((lat (org-entry-get (point) "LATITUDE"))
-        (lon (org-entry-get (point) "LONGITUDE")))
-    (browse-url (format "geo:%s,%s;z=10" lat lon))))
-
-
-(defun orgpx-open-with-google ()
-  "Open location at point using Google Maps."
-  (interactive)
-  (let ((lat (org-entry-get (point) "LATITUDE"))
-        (lon (org-entry-get (point) "LONGITUDE")))
-    (browse-url (format "https://www.google.com/maps/search/?api=1&query=%s,%s" lat lon))))
-
-(defun orgpx-osm-open-locations-in-file ()
-  "Open with osm.el all locations in current file."
-  (interactive)
-  (let ((file (make-temp-file "orgpx-" nil ".gpx"))
-        (orgpx-files (list buffer-file-name)))
-    (orgpx-export file)
-    (osm-open file)))
 
 
 (defun orgpx--get-coordinates-from-current-kill ()
@@ -165,6 +146,7 @@ file names.")
         (lambda () (org-get-tags))
         "+LATITUDE={.+}" (orgpx-location-files) 'archive 'comment))))))
 
+;;;###autoload
 (defun orgpx-add-tag ()
   "Add tag to location, offering completion from alredy used tags."
   (interactive)

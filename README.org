@@ -11,7 +11,12 @@ shared yet, use the code at your own risk.
 
 ** Installation
 
-For now, just load manually the Elisp files in this repository.
+For now, just load manually the Elisp files in this repository, or
+with if you use straight.el, run the following in your init file:
+#+begin_src emacs-lisp
+  (use-package orgpx
+    :straight (orgpx :type git :host github :repo "igmacs/orgpx"))
+#+end_src
 
 
 ** Dependencies
