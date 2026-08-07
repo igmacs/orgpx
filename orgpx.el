@@ -1,7 +1,7 @@
 ;;; orgpx.el --- Organize your favorite places in Org Mode -*- lexical-binding: t; -*-
 
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "30.2") (org "9.8") (osm "2.4"))
+;; Package-Requires: ((emacs "30.2") (org "9.8") (osm "2.4") (org-ql "0.8.10"))
 ;; URL: https://github.com/igmacs/orgpx
 
 ;;; Commentary:
@@ -68,8 +68,10 @@ file names.")
            (buffer-string))))))
 
 ;;;###autoload
-(defun orgpx-export (file)
-  "Collect favorite locations and export them to gpx file FILE."
+(defun orgpx-export (file &optional markers)
+  "Collect favorite locations and export them to gpx file FILE.
+By default, collect all locations, but optional argument MARKERS
+allows to specify a only a subset of them as a list of their markers."
   (interactive)
   (save-window-excursion
     (switch-to-buffer (generate-new-buffer "orgpx-export"))
@@ -83,7 +85,7 @@ file names.")
       "  <metadata>\n"
       "    <name>favourites</name>\n"
       "  </metadata>\n"))
-    (dolist (marker (orgpx-get-places))
+    (dolist (marker (or markers (orgpx-get-places)))
       (insert (orgpx-export-place marker)))
     (goto-char (point-max))
     (insert "</gpx>")
